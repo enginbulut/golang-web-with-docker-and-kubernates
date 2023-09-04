@@ -1,5 +1,11 @@
-postgres:
+init_postgres:
 	docker run --name postgres12 -p 5454:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
+
+start_postgres:
+	docker start postgres12
+
+stop_postgres:
+	docker stop postgres12
 
 create_db:
 	docker exec -it postgres12 createdb --username=root --owner=root simple_bank
@@ -19,4 +25,7 @@ sqlc:
 test:
 	go test -v -cover ./...
 
-.PHONY: postgres create_db drop_db migrate_up migrate_down sqlc test
+server:
+	go run main.go
+
+.PHONY: init_postgres start_postgres stop_postgres create_db drop_db migrate_up migrate_down sqlc test server
