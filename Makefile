@@ -28,4 +28,10 @@ test:
 server:
 	go run main.go
 
-.PHONY: init_postgres start_postgres stop_postgres create_db drop_db migrate_up migrate_down sqlc test server
+mockdb:
+	sudo mockgen --package mockdb -destination db/mock/store.go github.com/enginbulut/golang-example-1/db/sqlc Store
+
+print_go_path:
+	/bin/bash -c "echo \$GOPATH"
+
+.PHONY: init_postgres start_postgres stop_postgres create_db drop_db migrate_up migrate_down sqlc test server mockdb print_go_path
