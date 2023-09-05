@@ -13,6 +13,9 @@ create_db:
 drop_db:
 	docker exec -it postgres12 dropdb simple_bank
 
+add_migration:
+	migrate create -ext sql -dir db/migration -seq $(migration_name)
+
 migrate_up:
 	migrate -path ./db/migration -database "postgresql://root:secret@localhost:5454/simple_bank?sslmode=disable" -verbose up
 
