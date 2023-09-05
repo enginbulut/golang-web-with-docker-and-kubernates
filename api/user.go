@@ -4,7 +4,6 @@ import (
 	db "github.com/enginbulut/golang-example-1/db/sqlc"
 	"github.com/enginbulut/golang-example-1/util"
 	"github.com/gin-gonic/gin"
-	"github.com/lib/pq"
 	"net/http"
 	"time"
 )
@@ -56,12 +55,9 @@ func (server *Server) createUser(ctx *gin.Context) {
 
 	user, err := server.store.CreateUser(ctx, arg)
 	if err != nil {
-		if pqErr, ok := err.(*pq.Error); ok {
-			switch pqErr.Code.Name() {
-			case "unique_violation":
-				ctx.JSON(http.StatusForbidden, errorResponse(err))
-				return
-			}
+		if db.ErrorCode(err) == db.UniqueViolation {
+			ctx.JSON(http.StatusForbidden, errorResponse(err))
+			return
 		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
