@@ -37,4 +37,4 @@ mockdb:
 print_go_path:
 	/bin/bash -c "echo \$GOPATH"
 
-.PHONY: init_postgres start_postgres stop_postgres create_db drop_db migrate_up migrate_down sqlc test server mockdb print_go_path
+.PHONY: init_postgres start_postgres stop_postgres create_db drop_db add_migration migrate_up migrate_down sqlc test server mockdb print_go_path
