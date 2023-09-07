@@ -1,5 +1,8 @@
+network:
+	docker network create bank-network
+
 init_postgres:
-	docker run --name postgres12 -p 5454:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
+	docker run --name postgres12 --network bank-network -p 5454:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine
 
 start_postgres:
 	docker start postgres12
@@ -37,4 +40,4 @@ mockdb:
 print_go_path:
 	/bin/bash -c "echo \$GOPATH"
 
-.PHONY: init_postgres start_postgres stop_postgres create_db drop_db migrate_up migrate_down sqlc test server mockdb print_go_path
+.PHONY: init_postgres start_postgres stop_postgres create_db drop_db add_migration migrate_up migrate_down sqlc test server mockdb print_go_path
